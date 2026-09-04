@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#722f37"><title>Owen's Toolbox v1.2</title>
+<style>
+:root{--c:#722f37;--c2:#5a242b;--bg:#fffaf7;--ink:#241c1d;--muted:#756b6d;--card:#fff;--line:#eadfe0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,var(--c),var(--c2));color:#fff;padding:calc(26px + env(safe-area-inset-top)) 20px 26px;border-radius:0 0 28px 28px}
+.wrap{max-width:720px;margin:auto;padding:20px}h1{margin:0;font-size:30px}header p{margin:7px 0 0;opacity:.86}h2{margin-top:4px}
+section{display:none}.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:19px;min-height:124px;box-shadow:0 5px 18px #00000008;cursor:pointer}
+.card:active{transform:scale(.98)}.emoji{font-size:30px}.card b{display:block;margin-top:9px;font-size:17px}.muted{font-size:13px;color:var(--muted);margin-top:4px}
+.back{border:0;background:none;color:var(--c);font-size:16px;font-weight:800;padding:8px 0 14px}
+.tool{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}
+label{display:block;font-weight:700;margin:12px 0 6px}input,select{width:100%;padding:14px;border:1px solid #d8cacc;border-radius:12px;background:#fff;font-size:17px}
+button.primary{width:100%;border:0;background:var(--c);color:#fff;padding:14px;border-radius:12px;font-size:17px;font-weight:800;margin-top:15px}
+button.secondary{border:1px solid var(--c);background:#fff;color:var(--c);padding:12px 15px;border-radius:12px;font-weight:800;margin-top:10px;width:100%}
+.result{margin-top:14px;padding:15px;border-radius:14px;background:#f3e7e8;line-height:1.55}.big{font-size:27px;font-weight:900;color:var(--c)}
+.small{font-size:13px;color:var(--muted)}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:380px){.grid{gap:10px}.card{padding:15px}}
+</style></head>
+<body>
+<header><div class="wrap"><h1>🧰 Owen's Toolbox</h1><p>Your useful little tools, all in one place.</p></div></header>
+<main class="wrap">
+<section id="home" class="active"><h2>Toolbox</h2><div class="grid">
+<div class="card" onclick="show('calc')"><span class="emoji">🧮</span><b>Calculators</b><div class="muted">Quick calculations</div></div>
+<div class="card" onclick="show('car')"><span class="emoji">🚗</span><b>Car</b><div class="muted">Fuel & PCP tools</div></div>
+<div class="card" onclick="show('money')"><span class="emoji">💰</span><b>Money</b><div class="muted">Savings & finance</div></div>
+<div class="card" onclick="show('house')"><span class="emoji">🏠</span><b>Home</b><div class="muted">Deposit planning</div></div>
+<div class="card" onclick="show('erin')"><span class="emoji">❤️</span><b>Erin & Owen</b><div class="muted">Date-night ideas</div></div>
+<div class="card" onclick="show('random')"><span class="emoji">🎲</span><b>Random</b><div class="muted">Generators</div></div>
+</div></section>
+
+<section id="calc"><button class="back" onclick="show('home')">← Back</button><h2>🧮 Calculators</h2>
+<div class="tool"><h3>Cases per hour</h3><label>Cases completed</label><input id="cases" type="number" placeholder="1080"><label>Hours worked</label><input id="hours" type="number" step=".1" placeholder="7.5"><label>Target per hour</label><input id="target" type="number" value="150"><button class="primary" onclick="casesCalc()">Calculate</button><div id="cr" class="result">Enter your figures.</div></div>
+<div class="tool"><h3>Percentage</h3><label>Percentage</label><input id="pct" type="number" placeholder="20"><label>Of</label><input id="pctof" type="number" placeholder="500"><button class="primary" onclick="pctCalc()">Calculate</button><div id="pr" class="result">Enter your figures.</div></div>
+<div class="tool"><h3>Hours worked</h3><label>Start time</label><input id="start" type="time"><label>Finish time</label><input id="finish" type="time"><label>Unpaid break (minutes)</label><input id="breakm" type="number" value="30"><button class="primary" onclick="hoursCalc()">Calculate</button><div id="hr" class="result">Enter your times.</div></div>
+</section>
+
+<section id="car"><button class="back" onclick="show('home')">← Back</button><h2>🚗 Car Dashboard</h2>
+<div class="tool"><h3>Your car & PCP</h3>
+<label>Current mileage</label><input id="cmile" type="number" placeholder="53000">
+<label>Annual mileage allowance</label><input id="callow" type="number" value="8000">
+<label>PCP length (years)</label><input id="cyears" type="number" value="4">
+<label>Months into PCP</label><input id="cmonths" type="number" value="12">
+<label>Excess mileage rate (pence)</label><input id="crate" type="number" step=".1" value="7">
+<button class="primary" onclick="carDashboard()">Update dashboard</button>
+<div id="cdash" class="result">Enter your PCP details and tap Update.</div></div>
+
+<div class="tool"><h3>⛽ Fuel cost</h3>
+<label>Miles driven</label><input id="fmiles" type="number" placeholder="500">
+<label>MPG</label><input id="fmpg" type="number" step=".1" placeholder="45">
+<label>Fuel price (£/litre)</label><input id="fprice" type="number" step=".001" placeholder="1.50">
+<button class="primary" onclick="fuelCalc2()">Calculate</button>
+<div id="fres" class="result">Enter your figures.</div></div>
+
+<div class="tool"><h3>📈 Mileage tracker</h3>
+<p class="small">Add a mileage reading. It is stored only in this browser on this device.</p>
+<label>Date</label><input id="mdate" type="date">
+<label>Mileage</label><input id="mreading" type="number" placeholder="53000">
+<button class="primary" onclick="addMileage()">Add reading</button>
+<button class="secondary" onclick="clearMileage()">Clear saved readings</button>
+<div id="mres" class="result">No readings yet.</div></div>
+</section>
+
+<section id="money"><button class="back" onclick="show('home')">← Back</button><h2>💰 Money</h2>
+<div class="tool"><h3>Savings target</h3><label>Current savings (£)</label><input id="sav" type="number" placeholder="3000"><label>Target (£)</label><input id="savtarget" type="number" placeholder="10000"><label>Monthly saving (£)</label><input id="savmonth" type="number" placeholder="500"><button class="primary" onclick="saveCalc()">Calculate</button><div id="sr" class="result">Enter your figures.</div></div>
+<div class="tool"><h3>Loan repayment</h3><label>Loan amount (£)</label><input id="loan" type="number" placeholder="4000"><label>Annual interest (%)</label><input id="interest" type="number" step=".01" placeholder="12.3"><label>Term (months)</label><input id="term" type="number" placeholder="12"><button class="primary" onclick="loanCalc()">Calculate</button><div id="lr" class="result">Enter your figures.</div></div>
+</section>
+
+<section id="house"><button class="back" onclick="show('home')">← Back</button><h2>🏠 Home</h2>
+<div class="tool"><h3>Deposit calculator</h3><label>House price (£)</label><input id="houseprice" type="number" placeholder="250000"><label>Deposit (%)</label><input id="depositpct" type="number" step=".1" value="10"><button class="primary" onclick="depositCalc()">Calculate</button><div id="dr" class="result">Enter a house price.</div></div>
+</section>
+
+<section id="erin"><button class="back" onclick="show('home')">← Back</button><h2>❤️ Erin & Owen</h2>
+<div class="tool"><h3>Date-night generator</h3><p class="small">Tap the button for a random idea.</p><button class="primary" onclick="dateGen()">Surprise us ❤️</button><div id="dater" class="result">Ready when you are.</div></div>
+</section>
+
+<section id="random"><button class="back" onclick="show('home')">← Back</button><h2>🎲 Random</h2>
+<div class="tool"><h3>Year + gender</h3><button class="primary" onclick="ygGen()">Generate</button><div id="ygr" class="result">Tap generate.</div></div>
+<div class="tool"><h3>Random number</h3><div class="row"><div><label>Min</label><input id="min" type="number" value="1"></div><div><label>Max</label><input id="max" type="number" value="100"></div></div><button class="primary" onclick="numGen()">Generate</button><div id="nr" class="result">Tap generate.</div></div>
+</section>
+</main>
+<script>
+function show(id){document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0)}
+const n=id=>parseFloat(document.getElementById(id).value);
+function casesCalc(){let c=n('cases'),h=n('hours'),t=n('target')||150;if(!c||!h){cr.textContent='Please enter cases and hours.';return}let a=c/h,d=a-t,need=Math.max(0,Math.ceil(t*h-c));cr.innerHTML=`<div class="big">${a.toFixed(1)} cases/hour</div>Target: ${t}/hour<br><b>${d>=0?'Ahead':'Behind'}:</b> ${Math.abs(d).toFixed(1)}/hour<br><b>${d>=0?'Extra cases':'Cases needed'}:</b> ${d>=0?Math.floor(c-t*h):need}`}
+function pctCalc(){let p=n('pct'),v=n('pctof');pr.innerHTML=`<div class="big">${(v*p/100).toFixed(2)}</div>${p}% of ${v}`}
+function hoursCalc(){let a=document.getElementById('start').value,b=document.getElementById('finish').value,br=n('breakm')||0;if(!a||!b){hr.textContent='Please enter start and finish.';return}let [ah,am]=a.split(':').map(Number),[bh,bm]=b.split(':').map(Number),mins=bh*60+bm-(ah*60+am)-br;if(mins<0)mins+=1440;hr.innerHTML=`<div class="big">${Math.floor(mins/60)}h ${mins%60}m</div>Paid working time`}
+function carDashboard(){
+let m=n('cmile'),a=n('callow'),y=n('cyears'),mo=n('cmonths'),r=n('crate');
+if(!m||!a||!y||mo<0||!r){cdash.textContent='Please enter your PCP details.';return}
+let total=a*y,allowedNow=a*(mo/12),over=Math.max(0,m-allowedNow),endProjection=m+((y*12-mo)*(m/Math.max(1,mo))),excessEnd=Math.max(0,endProjection-total),charge=excessEnd*r/100;
+cdash.innerHTML=`<div class="big">${m.toLocaleString()} miles</div><b>Allowed by now:</b> ${Math.round(allowedNow).toLocaleString()}<br><b>Currently over/under:</b> ${Math.abs(m-allowedNow).toLocaleString()} ${m>=allowedNow?'over':'under'}<br><b>Projected PCP-end mileage:</b> ${Math.round(endProjection).toLocaleString()}<br><b>Projected excess:</b> ${Math.round(excessEnd).toLocaleString()} miles<br><b>Projected excess charge:</b> £${charge.toFixed(2)}<br><span class="small">Projection assumes your mileage continues at your average pace so far.</span>`}
+function fuelCalc2(){let m=n('fmiles'),g=n('fmpg'),p=n('fprice');if(!m||!g||!p){fres.textContent='Please enter all figures.';return}let litres=m/g*4.54609,cost=litres*p;fres.innerHTML=`<div class="big">£${cost.toFixed(2)}</div>${litres.toFixed(1)} litres • £${(cost/m).toFixed(3)} per mile`}
+function getMiles(){try{return JSON.parse(localStorage.getItem('owensMileage')||'[]')}catch(e){return[]}}
+function addMileage(){let d=document.getElementById('mdate').value||new Date().toISOString().slice(0,10),m=n('mreading');if(!m){mres.textContent='Enter a mileage reading.';return}let a=getMiles();a.push({d,m});a.sort((x,y)=>x.d.localeCompare(y.d));localStorage.setItem('owensMileage',JSON.stringify(a));renderMileage()}
+function clearMileage(){localStorage.removeItem('owensMileage');renderMileage()}
+function renderMileage(){let a=getMiles();if(!a.length){mres.textContent='No readings yet.';return}let text=a.map(x=>`${x.d}: ${x.m.toLocaleString()} miles`).join('<br>');let extra='';if(a.length>1){let first=a[0],last=a[a.length-1],days=(new Date(last.d)-new Date(first.d))/86400000,avg=days>0?(last.m-first.m)/days*365:0;extra=`<hr><b>Average annualised mileage:</b> ${Math.round(avg).toLocaleString()} miles/year`}mres.innerHTML=text+extra}
+renderMileage()
+function pcpCalc(){let a=n('allow'),y=n('years'),c=n('current'),mo=n('months'),r=n('rate');if(!a||!y||c===''||!mo||!r){pcpr.textContent='Please enter your figures.';return}let usedAllowed=a*y,ex=Math.max(0,c-usedAllowed*(mo/(y*12))),cost=ex*r/100;pcpr.innerHTML=`<div class="big">${ex.toLocaleString()} excess miles</div>Estimated excess charge: <b>£${cost.toFixed(2)}</b><br><span class="small">This is a simple estimate based on your current pace.</span>`}
+function saveCalc(){let s=n('sav'),t=n('savtarget'),m=n('savmonth');if(m<=0||t<=s){sr.innerHTML=`<div class="big">£${Math.max(0,t-s).toFixed(2)}</div>Amount remaining`;return}let months=Math.ceil((t-s)/m);sr.innerHTML=`<div class="big">${months} months</div>Amount remaining: £${(t-s).toFixed(2)}<br>At £${m.toFixed(2)} saved per month`}
+function loanCalc(){let P=n('loan'),annual=n('interest'),N=n('term');if(!P||N<=0){lr.textContent='Please enter loan amount and term.';return}let r=annual/100/12,pay=r?P*r/(1-Math.pow(1+r,-N)):P/N,total=pay*N;lr.innerHTML=`<div class="big">£${pay.toFixed(2)}/month</div>Total repaid: £${total.toFixed(2)}<br>Interest: £${(total-P).toFixed(2)}`}
+function depositCalc(){let p=n('houseprice'),d=n('depositpct');if(!p){dr.textContent='Please enter a house price.';return}let dep=p*d/100;dr.innerHTML=`<div class="big">£${dep.toLocaleString(undefined,{minimumFractionDigits:2})}</div>Mortgage needed: £${(p-dep).toLocaleString(undefined,{minimumFractionDigits:2})}`}
+const dates=['Scenic walk + dinner','Movie night + takeaway','Coffee date + explore somewhere new','Cook something neither of you has made before','Mini road trip + random destination','Bowling + food','Picnic if the weather behaves','Dessert-only date'];
+function dateGen(){dater.innerHTML=`<div class="big">${dates[Math.floor(Math.random()*dates.length)]}</div>`}
+function ygGen(){ygr.innerHTML=`<div class="big">${2027+Math.floor(Math.random()*3)}</div>${Math.random()<.5?'M':'F'}`}
+function numGen(){let a=Math.ceil(n('min')),b=Math.floor(n('max'));if(b<a){nr.textContent='Max must be greater than or equal to min.';return}nr.innerHTML=`<div class="big">${Math.floor(Math.random()*(b-a+1))+a}</div>`}
+</script></body></html>
